@@ -8,24 +8,19 @@ using System.Threading.Tasks;
 
 namespace FluentAPI.Models
 {
-    [Table("STAFF")]
-    public class Employee
+    [Table("Users")]
+    public class User
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
         [MaxLength(20)]
-        [Column("FirstName")]
-        public string FirstName { get; set; }
+        [Column("Login")]
+        public string Login { get; set; }
         [Required]
-        [MaxLength(20)]
-        [Column("LastName")]
-        public string LastName { get; set; }
-        [Required]
-        [MaxLength(20)]
-        [Column("Position")]
-        public string Position { get; set; }
+        [MaxLength(30)]
+        [Column("Password")]
+        public string Password { get; set; }
     }
-
 }

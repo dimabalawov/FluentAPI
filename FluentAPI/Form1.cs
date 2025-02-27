@@ -45,17 +45,9 @@ namespace FluentAPI
         private void button1_Click(object sender, EventArgs e)
         {
             Form2 addForm = new Form2();
+            addForm.ShowDialog();
 
-            if (addForm.ShowDialog() == DialogResult.OK)
-            {
-                using (AppDbContext db = new AppDbContext())
-                {
-                    db.Employees.Add(addForm.employee);
-                    db.SaveChanges();
-                }
-
-                LoadEmployees();
-            }
+            LoadEmployees();
         }
         private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -71,6 +63,17 @@ namespace FluentAPI
                     {
                         db.Employees.Remove(employee);
                         db.SaveChanges();
+                        try
+                        {
+                            using (StreamWriter writer = new StreamWriter("logs.txt", append: true))
+                            {
+                                writer.WriteLine($"Удален сотрудник {employee.FirstName} {employee.LastName}!");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Ошибка при добавлении лога: " + ex.Message);
+                        }
                         MessageBox.Show("Сотрудник удален!");
 
                         LoadEmployees();

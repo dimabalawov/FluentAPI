@@ -30,14 +30,32 @@ namespace FluentAPI
                 MessageBox.Show("Заполните все поля!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            employee = new Employee
+            using (var db = new AppDbContext())
             {
-                FirstName = textBox1.Text,
-                LastName = textBox2.Text,
-                Position = textBox3.Text
-            };
 
+                Models.Employee newEmployee = new Models.Employee
+                {
+                    FirstName = textBox1.Text,
+                    LastName = textBox2.Text,
+                    Position = textBox3.Text
+                };
+                db.Employees.Add(newEmployee); ;
+                db.SaveChanges();
+                DialogResult = DialogResult.OK;
+
+            }
+            try
+            {
+                // Используем StreamWriter для добавления строки в файл
+                using (StreamWriter writer = new StreamWriter("logs.txt", append: true))
+                {
+                    writer.WriteLine($"Добавлен сотрудник {employee.FirstName} {employee.LastName}!");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ошибка при добавлении лога: " + ex.Message);
+            }
             DialogResult = DialogResult.OK;
         }
     }
